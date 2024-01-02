@@ -23,7 +23,7 @@ const SigninForm = () => {
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
   const navigate = useNavigate();
 
-  const { mutateAsync: signInAccount } = useSignInAccount();
+  const { mutateAsync: signInAccount, isLoading } = useSignInAccount();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SigninValidation>>({
@@ -91,7 +91,7 @@ const SigninForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="shad-button_primary"> {isUserLoading ? (<div className="flex-center gat-2"><Loader /> Loading...</div>) : "Sign up"}</Button>
+          <Button type="submit" className="shad-button_primary"> {isLoading || isUserLoading ? (<div className="flex-center gat-2"><Loader />Loading...</div>) : "Sign up"}</Button>
           <p className="text-small-regular text-light-2 text-center mt-2">Don't have an account? <Link to="/sign-up" className="text-primary-500 text-small-semibold ml-1">Sign up</Link></p>
         </form>
       </div>
