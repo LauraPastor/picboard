@@ -91,7 +91,7 @@ const SigninForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="shad-button_primary"> {isUserLoading ? (<div className="flex-center gat-2"><Loader />Loading...</div>) : "Sign up"}</Button>
+          <Button type="submit" className="shad-button_primary"> {isUserLoading ? (<div className="flex-center gat-2"><Loader /> Loading...</div>) : "Sign up"}</Button>
           <p className="text-small-regular text-light-2 text-center mt-2">Don't have an account? <Link to="/sign-up" className="text-primary-500 text-small-semibold ml-1">Sign up</Link></p>
         </form>
       </div>
