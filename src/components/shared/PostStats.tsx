@@ -7,11 +7,11 @@ import Loader from "./Loader";
 
 type PostStatsProps = {
     userId: string;
-    post: Models.Document;
+    post?: Models.Document;
 };
 
 const PostStats = ({ userId, post }: PostStatsProps) => {
-    const likesList = post.likes.map((user: Models.Document) => user.$id)
+    const likesList = post?.likes.map((user: Models.Document) => user.$id)
     const [likes, setLikes] = useState(likesList)
     const [isSaved, setIsSaved] = useState(false)
     const { mutate: likePost } = useLikePost()
@@ -34,7 +34,7 @@ const PostStats = ({ userId, post }: PostStatsProps) => {
             newLikes.push(userId)
         }
         setLikes(newLikes)
-        likePost({ postId: post.$id, likesArray: newLikes })
+        likePost({ postId: post?.$id || '', likesArray: newLikes })
     }
     const handleSavePost = (e: React.MouseEvent) => {
         e.stopPropagation()
@@ -43,7 +43,7 @@ const PostStats = ({ userId, post }: PostStatsProps) => {
             setIsSaved(false)
             deleteSavedPost(savedPostRecord.$id)
         } else {
-            savePost({ postId: post.$id, userId })
+            savePost({ postId: post?.$id || '', userId })
             setIsSaved(true)
         }
 
