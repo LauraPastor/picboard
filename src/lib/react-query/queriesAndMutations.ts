@@ -1,8 +1,24 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { QUERY_KEYS } from "@/lib/react-query/queryKeys";
-import { create } from 'domain'
-import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getPostById, getRecentPosts, getUserPosts, likePost, savePost, signInAccount, signOutAccount, updatePost } from '../appwrite/api'
-import { INewPost, INewUser, IUpdatePost } from '@/types'
+import {
+    createUserAccount,
+    signInAccount,
+    getCurrentUser,
+    signOutAccount,
+    createPost,
+    getPostById,
+    updatePost,
+    getUserPosts,
+    deletePost,
+    likePost,
+
+    getRecentPosts,
+    getInfinitePosts,
+    searchPosts,
+    savePost,
+    deleteSavedPost,
+} from "@/lib/appwrite/api";
+import { INewPost, INewUser, IUpdatePost } from "@/types";
 
 export const useCreateUserAccount = () => {
     return useMutation({
@@ -148,5 +164,26 @@ export const useGetUserPosts = (userId?: string) => {
         queryKey: [QUERY_KEYS.GET_USER_POSTS, userId],
         queryFn: () => getUserPosts(userId),
         enabled: !!userId,
+    });
+};
+
+export const useGetPosts = () => {
+    return useInfiniteQuery({
+        queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+        queryFn: getInfinitePosts,
+        getNextPageParam: (lastPage) => {
+            if (lastPage && lastPage.documents.length === 0) {
+                return null;
+            }
+            const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+            return lastId;
+        },
+    });
+};
+export const useSearchPosts = (searchTerm: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
+        queryFn: () => searchPosts(searchTerm),
+        enabled: !!searchTerm,
     });
 };
